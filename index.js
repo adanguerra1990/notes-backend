@@ -7,6 +7,7 @@ const Note = require('./models/note')
 app.use(express.json())
 app.use(cors())
 
+let notes = []
 
 app.use(express.static('dist'))
 
