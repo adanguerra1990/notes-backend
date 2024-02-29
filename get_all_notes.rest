@@ -4,13 +4,13 @@ GET http://localhost:3001/api/notes
 GET http://localhost:3001/api/notes/2
 
 ###
-DELETE http://localhost:3001/api/notes/3
+DELETE http://localhost:3001/api/notes/5565656589989
 
 ###
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
  {
-    "content": "Nota nueva",
+    "content": "non",
     "important": true
  }
