@@ -49,12 +49,6 @@ app.get('/api/notes', (request, response) => {
 app.post('/api/notes', (request, response, next) => {
     const body = request.body
 
-    // if (!body.content === undefined) {
-    //     return response.status(400).json({
-    //         error: 'content missing'
-    //     })
-    // }
-
     const note = new Note({
         content: body.content,
         important: Boolean(body.important) || false,
@@ -77,34 +71,6 @@ app.get('/api/notes/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-// app.get('/api/notes/:id', (request, response) => {
-//     const id = Number(request.params.id)
-//     const note = notes.find(note => note.id === id)
-
-//     if (note) {
-//         response.json(note)
-//     } else {
-//         response.status(404).end()
-//     }
-// })
-
-
-
-// app.delete('/api/notes/:id', (request, response) => {
-//     const id = Number(request.params.id)
-//     notes = notes.filter(note => note.id !== id)
-
-//     response.status(204).end()
-// })
-
-// const generateId = () => {
-//     const maxId = notes.length > 0
-//         ? Math.max(...notes.map(n => n.id)) : 0
-//     console.log('maxId', maxId)
-
-//     return maxId + 1
-// }
-
 app.delete('/api/notes/:id', (request, response, next) => {
     Note.findByIdAndDelete(request.params.id)
         .then(result => {
@@ -115,12 +81,6 @@ app.delete('/api/notes/:id', (request, response, next) => {
 
 app.put('/api/notes/:id', (request, response, next) => {
     const { content, important } = request.body
-
-    // const note = {
-    //     content: body.content,
-    //     important: body.important
-    // }
-
     Note.findByIdAndUpdate(
         request.params.id,
         { content, important },
