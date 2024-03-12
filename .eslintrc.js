@@ -2,7 +2,8 @@ module.exports = {
   'env': {
       'commonjs': true,
       'es2021': true,
-      'node': true
+      'node': true,
+      'jest': true,
   },
   'overrides': [
       {
@@ -31,7 +32,7 @@ module.exports = {
       ],
       '@stylistic/js/linebreak-style': [
           'error',
-          'unix'
+          'windows'
       ],
       '@stylistic/js/quotes': [
           'error',
