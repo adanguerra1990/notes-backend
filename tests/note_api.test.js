@@ -35,7 +35,6 @@ test('una nota específica está dentro de las notas devueltas', async () => {
   const response = await api.get('/api/notes')
 
   const contents = response.body.map(r => r.content)
-  console.log(contents)
   expect(contents).toContain(
     'CSS es facil'
   )
@@ -55,7 +54,7 @@ test('se puede agregar una nota válida', async () => {
   const notesAtEnd = await helper.notesInDb()
   expect(notesAtEnd).toHaveLength(helper.inicialNotes.length + 1)
 
-  const contents = notesAtEnd.map(r => r.content)  
+  const contents = notesAtEnd.map(r => r.content)
   expect(contents).toContain(
     'async/await simplifies making async calls'
   )
@@ -71,10 +70,41 @@ test('Nota sin contenido no se agrega', async () => {
     .expect(400)
 
   const notesAtEnd = await helper.notesInDb()
-  console.log('response', notesAtEnd)
-
   expect(notesAtEnd).toHaveLength(helper.inicialNotes.length)
 }, 30000)
+
+test('se puede ver una nota específica ', async () => {
+  const notesAtStart = await helper.notesInDb()
+
+  const noteToView = notesAtStart[0]
+
+  const resultNote = await api
+    .get(`/api/notes/${noteToView.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(resultNote.body).toEqual(noteToView)
+})
+
+test('Una nota se puede Eliminar', async () => {
+  const notesAtStart = await helper.notesInDb()
+  const noteToDelete = notesAtStart[0]
+
+  await api
+    .delete(`/api/notes/${noteToDelete.id}`)
+    .expect(204)
+
+  const notesAtEnd = await helper.notesInDb()
+
+  expect(notesAtEnd).toHaveLength(
+    helper.inicialNotes.length - 1
+  )
+
+  const contents = notesAtEnd.map(r => r.content)
+
+  expect(contents).not.toContain(noteToDelete.content)
+})
+
 
 
 afterAll(() => {
