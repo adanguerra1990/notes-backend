@@ -4,21 +4,24 @@ const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
-
 const Note = require('../models/note')
-
 
 beforeEach(async () => {
   await Note.deleteMany({})
+  console.log('Despejada')
 
-  let noteObject = new Note(helper.inicialNotes[0])
-  await noteObject.save()
+  // const noteObjects = helper.inicialNotes
+  //   .map(note => new Note(note))
+  // const promiseArray = noteObjects.map(note => note.save())
+  // await Promise.all(promiseArray)
 
-  noteObject = new Note(helper.inicialNotes[1])
-  await noteObject.save()
+  await Note.insertMany(helper.inicialNotes)
+
+  console.log('Done')
 }, 30000)
 
 test('Devuelve las notas en formato json', async () => {
+  console.log('entró en la prueba')
   await api
     .get('/api/notes')
     .expect(200)
