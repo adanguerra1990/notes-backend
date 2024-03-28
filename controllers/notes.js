@@ -1,5 +1,6 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
+const User = require('../models/user')
 
 notesRouter.get('/', async (request, response) => {
     const notes = await Note.find({})
@@ -9,6 +10,8 @@ notesRouter.get('/', async (request, response) => {
 notesRouter.post('/', async (request, response) => {
     const body = request.body
 
+    const user = await User.findById(body.userId)
+
     // Validacion adicional en el controlador
     if (!body.content || body.content.trim().length === 0) {
         return response.status(400).json({ error: 'Nota sin contenido no se agrega' });
@@ -16,10 +19,14 @@ notesRouter.post('/', async (request, response) => {
 
     const note = new Note({
         content: body.content,
-        important: Boolean(body.important) || false,
+        important: body.important === undefined ? false 
+                : body.important, user: user.id
     })
 
     const savedNote = await note.save()
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
+
     response.status(201).json(savedNote)
 })
 

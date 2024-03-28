@@ -1,7 +1,7 @@
 GET http://localhost:3001/api/notes
 
 ###
-GET http://localhost:3001/api/notes/2
+GET http://localhost:3001/api/notes/6605b6175120865d2f962016
 
 ###
 DELETE http://localhost:3001/api/notes/65fc6d59b2a2dc099d0ce144
@@ -11,15 +11,19 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
  {
-    "content": "Nueva Nota",
-    "important": true
+    "content": "Nota de Matti",
+    "important": true,
+    "userId": "6605b6a35120865d2f962020"
  }
 ###
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "mluukkai",
+    "username": "ajgg",
     "name": "Matti Luukkainen",
     "password": "salainen"
 }
+
+###
+GET http://localhost:3001/api/users
